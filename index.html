@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FIGORAQ — Custom 3D Miniatures India</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+<!-- Razorpay Payment SDK -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<!-- Microsoft Clarity Analytics — Replace YOUR_CLARITY_ID after signup at clarity.microsoft.com (free) -->
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","YOUR_CLARITY_ID");
+</script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --white:#ffffff;--off:#faf8f4;--off2:#f3f0ea;--border:#e8e2d8;--border2:#d4cec4;
+  --text:#1a1814;--text2:#5a5248;--text3:#9a9088;
+  --amber:#b8720f;--amber2:#d4890f;--amber-light:#fef3e0;--amber-bg:#fdf6eb;
+  --green:#1a6b3c;--green-light:#e8f5ee;--red:#c0392b;
+  --font-serif:'Playfair Display',serif;--font-sans:'DM Sans',sans-serif;
+  --radius:4px;--shadow:0 2px 16px rgba(0,0,0,0.07);--shadow2:0 6px 32px rgba(0,0,0,0.12)
+}
+html{scroll-behavior:smooth}
+body{background:var(--white);color:var(--text);font-family:var(--font-sans);font-weight:400;overflow-x:hidden}
+
+/* TOPBAR */
+.topbar{background:var(--text);color:rgba(255,255,255,0.75);text-align:center;padding:9px;font-size:12px;letter-spacing:0.5px}
+.topbar b{color:var(--amber2)}
+
+/* NAV */
+nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;padding:0 48px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:66px;gap:24px}
+.nav-logo{font-family:var(--font-serif);font-size:22px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:1px;flex-shrink:0}
+.nav-logo em{color:var(--amber);font-style:normal}
+.nav-links{display:flex;gap:2px;list-style:none}
+.nav-links a{font-size:13px;color:var(--text2);text-decoration:none;padding:6px 14px;border-radius:var(--radius);transition:all .2s}
+.nav-links a:hover{color:var(--amber);background:var(--amber-light)}
+.cart-btn{display:flex;align-items:center;gap:8px;background:var(--amber);color:#fff;border:none;padding:9px 20px;font-family:var(--font-sans);font-size:13px;font-weight:500;border-radius:var(--radius);cursor:pointer;transition:background .2s;flex-shrink:0}
+.cart-btn:hover{background:var(--amber2)}
+.c-badge{background:#fff;color:var(--amber);font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1}
+.c-badge.pop{animation:pop .25s}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.6)}}
+
+/* HERO */
+.hero{background:var(--off);border-bottom:1px solid var(--border)}
+.hero-inner{max-width:1200px;margin:0 auto;padding:56px 48px;display:grid;grid-template-columns:1.1fr 0.9fr;gap:64px;align-items:center}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--amber-light);color:var(--amber);font-size:11px;font-weight:500;letter-spacing:1.5px;padding:5px 14px;border-radius:20px;margin-bottom:18px}
+.hero h1{font-family:var(--font-serif);font-size:clamp(34px,3.8vw,52px);font-weight:700;line-height:1.15;color:var(--text);margin-bottom:14px}
+.hero h1 em{font-style:italic;color:var(--amber)}
+.hero-sub{font-size:15px;color:var(--text2);line-height:1.85;margin-bottom:28px;max-width:500px}
+.hero-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:32px}
+.btn-primary{display:inline-block;padding:13px 28px;background:var(--amber);color:#fff;font-family:var(--font-sans);font-size:13px;font-weight:500;border-radius:var(--radius);text-decoration:none;border:none;cursor:pointer;transition:background .2s,transform .15s}
+.btn-primary:hover{background:var(--amber2);transform:translateY(-1px)}
+.btn-secondary{display:inline-block;padding:12px 22px;background:transparent;color:var(--text);font-family:var(--font-sans);font-size:13px;border-radius:var(--radius);text-decoration:none;border:1.5px solid var(--border2);transition:all .2s}
+.btn-secondary:hover{border-color:var(--amber);color:var(--amber)}
+.hero-stats{display:flex;gap:28px;padding-top:24px;border-top:1px solid var(--border)}
+.hstat .n{font-family:var(--font-serif);font-size:26px;font-weight:700;color:var(--text);line-height:1}
+.hstat .l{font-size:11px;color:var(--text3);margin-top:3px}
+.hero-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.hcard{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s}
+.hcard:hover{transform:translateY(-4px);box-shadow:var(--shadow2)}
+.hcard-img{background:var(--off2);display:flex;align-items:center;justify-content:center;padding:20px 0 12px}
+.hcard-body{padding:12px 14px 14px}
+.hcard-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+.hcard-price{font-size:12px;color:var(--amber);font-weight:500}
+.hcard.span2{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr}
+.hcard.span2 .hcard-img{padding:24px}
+.hcard.span2 .hcard-body{display:flex;flex-direction:column;justify-content:center}
+.hcard-tag{display:inline-block;background:var(--amber);color:#fff;font-size:9px;font-weight:500;padding:3px 8px;border-radius:2px;margin-bottom:8px;letter-spacing:1px}
+
+/* MARQUEE */
+.marquee-bar{background:var(--text);overflow:hidden;padding:11px 0}
+.m-track{display:flex;animation:marquee 22s linear infinite;white-space:nowrap}
+.m-track span{font-size:11px;letter-spacing:1.5px;color:rgba(255,255,255,0.45);padding:0 28px}
+.m-track .dot{color:var(--amber2);padding:0}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* CATEGORIES */
+.categories{padding:60px 48px;background:var(--white)}
+.sec-head{max-width:1200px;margin:0 auto 32px;display:flex;justify-content:space-between;align-items:flex-end}
+.sec-head h2{font-family:var(--font-serif);font-size:30px;font-weight:700;color:var(--text)}
+.sec-head h2 em{font-style:italic;color:var(--amber)}
+.sec-head a{font-size:13px;color:var(--amber);text-decoration:none;font-weight:500}
+.cat-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.ccat{background:var(--off);border:1px solid var(--border);border-radius:10px;overflow:hidden;text-decoration:none;transition:box-shadow .2s,transform .2s;text-align:center}
+.ccat:hover{box-shadow:var(--shadow2);transform:translateY(-3px)}
+.ccat-img{aspect-ratio:1;background:var(--off2);display:flex;align-items:center;justify-content:center;padding:16px}
+.ccat-label{font-size:12px;font-weight:500;color:var(--text);padding:8px 8px 4px}
+.ccat-count{font-size:10px;color:var(--text3);padding-bottom:10px}
+
+/* PRODUCTS */
+.products{padding:48px 48px 64px;background:var(--off)}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.pill{padding:7px 18px;font-size:12px;font-weight:500;border:1.5px solid var(--border2);border-radius:20px;background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font-sans);transition:all .2s}
+.pill:hover,.pill.on{border-color:var(--amber);color:var(--amber);background:var(--amber-light)}
+.pgrid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.pcard{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:box-shadow .25s,transform .25s;cursor:pointer;position:relative}
+.pcard:hover{box-shadow:var(--shadow2);transform:translateY(-4px)}
+.pcard.hide{display:none}
+.pimg{aspect-ratio:3/4;background:var(--off2);position:relative;display:flex;align-items:center;justify-content:center}
+.pimg::after{content:'View Details';position:absolute;inset:0;background:rgba(26,24,20,0.55);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:12px;font-weight:500;letter-spacing:2px;opacity:0;transition:opacity .25s}
+.pcard:hover .pimg::after{opacity:1}
+.pimg svg{transition:transform .4s}
+.pcard:hover .pimg svg{transform:scale(1.07) translateY(-4px)}
+.ribbon{position:absolute;top:12px;left:0;background:var(--amber);color:#fff;font-size:9px;font-weight:600;padding:4px 10px 4px 8px;letter-spacing:1px;border-radius:0 3px 3px 0}
+.ribbon.new-r{background:var(--green)}
+.ribbon.hot-r{background:var(--red)}
+.pbody{padding:16px}
+.pcat{font-size:10px;color:var(--amber);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.pname{font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px;line-height:1.35}
+.pdesc{font-size:12px;color:var(--text3);line-height:1.7;margin-bottom:14px}
+.pmeta{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.pprice .was{font-size:11px;color:var(--text3);text-decoration:line-through}
+.pprice .now{font-size:16px;font-weight:600;color:var(--text);font-family:var(--font-serif);line-height:1.1}
+.pprice .range{font-size:14px;font-weight:500;color:var(--text);font-family:var(--font-serif)}
+.pstars{color:var(--amber2);font-size:12px}
+.prev{font-size:10px;color:var(--text3);margin-left:3px}
+.szrow{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.sz{padding:4px 10px;font-size:11px;border:1px solid var(--border2);border-radius:3px;background:none;color:var(--text2);cursor:pointer;font-family:var(--font-sans);transition:all .2s}
+.sz:hover,.sz.on{border-color:var(--amber);color:var(--amber);background:var(--amber-light)}
+.atc{width:100%;padding:11px;background:var(--text);color:#fff;border:none;font-family:var(--font-sans);font-size:12px;font-weight:500;border-radius:var(--radius);cursor:pointer;transition:background .2s;letter-spacing:0.3px}
+.atc:hover{background:var(--amber)}
+.atc.added{background:#1a6b3c}
+
+/* TRUST */
+.trust{background:var(--off2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 48px}
+.trust-row{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.ti{display:flex;align-items:center;gap:12px}
+.ti-icon{width:42px;height:42px;background:var(--amber-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ti-t1{font-size:13px;font-weight:500;color:var(--text)}
+.ti-t2{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* HOW IT WORKS */
+.hiw{padding:72px 48px;background:var(--white)}
+.hiw-inner{max-width:960px;margin:0 auto;text-align:center}
+.hiw-inner>h2{font-family:var(--font-serif);font-size:32px;font-weight:700;margin-bottom:8px}
+.hiw-inner>p{font-size:14px;color:var(--text2);margin-bottom:52px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.steps::before{content:'';position:absolute;top:32px;left:12.5%;right:12.5%;height:1.5px;background:var(--border2)}
+.step{text-align:center;position:relative;z-index:1}
+.step-num{width:64px;height:64px;background:var(--white);border:2px solid var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:var(--font-serif);font-size:24px;font-weight:700;color:var(--amber)}
+.step-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px}
+.step-desc{font-size:11px;color:var(--text3);line-height:1.7;padding:0 8px}
+
+/* REVIEWS */
+.reviews{padding:72px 48px;background:var(--off)}
+.rgrid{max-width:1200px;margin:32px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.rcard{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:28px;position:relative}
+.rcard::before{content:'"';font-family:var(--font-serif);font-size:72px;color:var(--amber-light);position:absolute;top:8px;left:18px;line-height:1}
+.rtext{font-size:13px;color:var(--text2);line-height:1.85;margin-bottom:18px;padding-top:28px}
+.rauthor{display:flex;align-items:center;gap:12px}
+.ravatar{width:40px;height:40px;border-radius:50%;background:var(--amber-light);display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-size:16px;font-weight:700;color:var(--amber)}
+.rname{font-size:13px;font-weight:500;color:var(--text)}
+.rstars{color:var(--amber2);font-size:11px;margin-top:2px}
+
+/* CTA */
+.cta{background:var(--text);padding:64px 48px;text-align:center}
+.cta h2{font-family:var(--font-serif);font-size:36px;font-weight:700;color:#fff;margin-bottom:10px}
+.cta h2 em{font-style:italic;color:var(--amber2)}
+.cta p{font-size:14px;color:rgba(255,255,255,0.55);margin-bottom:28px}
+
+/* CART DRAWER */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.on{opacity:1;pointer-events:all}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:400px;max-width:100vw;background:var(--white);z-index:501;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:-4px 0 28px rgba(0,0,0,0.1)}
+.drawer.on{transform:translateX(0)}
+.dhead{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.dhead h3{font-size:15px;font-weight:600;color:var(--text)}
+.dcnt{background:var(--amber);color:#fff;font-size:10px;padding:2px 8px;border-radius:10px;margin-left:8px}
+.dclose{background:none;border:none;font-size:20px;color:var(--text3);cursor:pointer;line-height:1}
+.dclose:hover{color:var(--text)}
+.ditems{flex:1;overflow-y:auto;padding:16px 24px}
+.ditems::-webkit-scrollbar{width:3px}
+.ditems::-webkit-scrollbar-thumb{background:var(--amber)}
+.dempty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;gap:10px;color:var(--text3);font-size:13px}
+.ditem{display:grid;grid-template-columns:70px 1fr auto;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);align-items:start}
+.ditem-img{width:70px;height:70px;background:var(--off2);border-radius:6px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border)}
+.ditem-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+.ditem-meta{font-size:11px;color:var(--text3);margin-bottom:8px}
+.ditem-price{font-size:15px;font-weight:600;color:var(--text);font-family:var(--font-serif)}
+.qctrl{display:flex;align-items:center;gap:8px}
+.qb{width:26px;height:26px;background:var(--off2);border:1px solid var(--border);border-radius:3px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:all .2s}
+.qb:hover{background:var(--amber);color:#fff;border-color:var(--amber)}
+.qn{font-size:13px;font-weight:500;min-width:18px;text-align:center}
+.ddel{background:none;border:none;color:var(--border2);cursor:pointer;font-size:16px;transition:color .2s}
+.ddel:hover{color:var(--red)}
+.dfoot{padding:18px 24px;border-top:1px solid var(--border);background:var(--off)}
+.dtotal-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.dtotal-row span:first-child{font-size:12px;color:var(--text3)}
+.dtot{font-family:var(--font-serif);font-size:26px;font-weight:700;color:var(--text)}
+.dnote{font-size:11px;color:var(--text3);line-height:1.7;margin-bottom:14px}
+.dco{width:100%;padding:13px;background:var(--amber);color:#fff;border:none;font-family:var(--font-sans);font-size:13px;font-weight:500;border-radius:var(--radius);cursor:pointer;transition:background .2s;margin-bottom:8px}
+.dco:hover{background:var(--amber2)}
+.dwa{width:100%;padding:11px;background:#25D366;color:#fff;border:none;font-family:var(--font-sans);font-size:12px;font-weight:500;border-radius:var(--radius);cursor:pointer;transition:background .2s}
+.dwa:hover{background:#1da550}
+
+/* FOOTER */
+footer{background:var(--off2);border-top:1px solid var(--border);padding:48px 48px 24px}
+.foot-wrap{max-width:1200px;margin:0 auto}
+.ftop{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.fbrand{font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--text);margin-bottom:10px}
+.fbrand em{color:var(--amber);font-style:normal}
+.ftagline{font-size:12px;color:var(--text3);line-height:1.8}
+.fcol h4{font-size:11px;font-weight:600;color:var(--text);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px}
+.fcol a{display:block;font-size:12px;color:var(--text3);text-decoration:none;margin-bottom:8px;transition:color .2s}
+.fcol a:hover{color:var(--amber)}
+.fbot{border-top:1px solid var(--border);padding-top:18px;display:flex;justify-content:space-between;align-items:center}
+.fcopy{font-size:11px;color:var(--text3)}
+.fpol{display:flex;gap:20px}
+.fpol a{font-size:11px;color:var(--text3);text-decoration:none}
+.fpol a:hover{color:var(--amber)}
+
+/* WA FLOAT */
+.wa-float{position:fixed;bottom:28px;right:28px;z-index:400;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.45);text-decoration:none;transition:transform .2s}
+.wa-float:hover{transform:scale(1.1)}
+.wa-float svg{width:26px;height:26px;fill:#fff}
+
+/* FADE IN */
+.fi{opacity:0;transform:translateY(18px);transition:opacity .75s ease,transform .75s ease}
+.fi.vis{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.pgrid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){
+  nav{padding:0 20px}.nav-links{display:none}
+  .hero-inner{grid-template-columns:1fr;padding:40px 20px;gap:32px}.hero-cards{display:none}
+  .categories{padding:40px 20px}.cat-grid{grid-template-columns:repeat(3,1fr)}
+  .products{padding:40px 20px}.pgrid{grid-template-columns:repeat(2,1fr)}
+  .trust{padding:24px 20px}.trust-row{grid-template-columns:repeat(2,1fr)}
+  .hiw{padding:56px 20px}.steps{grid-template-columns:repeat(2,1fr)}.steps::before{display:none}
+  .reviews{padding:56px 20px}.rgrid{grid-template-columns:1fr}
+  .cta{padding:48px 20px}.ftop{grid-template-columns:1fr 1fr}
+  footer{padding:40px 20px 20px}
+}
+@media(max-width:560px){
+  .cat-grid{grid-template-columns:repeat(2,1fr)}.pgrid{grid-template-columns:1fr}
+  .trust-row{grid-template-columns:1fr}.ftop{grid-template-columns:1fr}
+  .fbot{flex-direction:column;gap:12px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">🚚 <b>Free Shipping</b> on orders above ₹999 &nbsp;·&nbsp; 10–15 Day Delivery Across India &nbsp;·&nbsp; 100% Custom Made</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">FIGORAQ<em>.</em></a>
+    <ul class="nav-links">
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#categories">Categories</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="cart-btn" onclick="openCart()">🛒 Cart <span class="c-badge" id="cb">0</span></button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     CINEMATIC SCROLL HERO (bluvnex style)
+     Replace bg-panel images with your real
+     product photos when ready — see comments
+═══════════════════════════════════════ -->
+<style>
+/* ── CINEMATIC HERO ── */
+.cin-hero{position:relative;height:100vh;min-height:600px;overflow:hidden;background:#0e0e0c;display:flex;align-items:center;justify-content:center}
+.cin-bg{position:absolute;inset:0;display:flex}
+.cin-panel{flex:1;position:relative;overflow:hidden;transition:flex .8s cubic-bezier(.4,0,.2,1)}
+.cin-panel img,.cin-panel .cin-svg{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s ease,opacity .6s;transform:scale(1.08)}
+.cin-panel.active{flex:3}
+.cin-panel.active img,.cin-panel.active .cin-svg{transform:scale(1)}
+.cin-panel:not(.active) img,.cin-panel:not(.active) .cin-svg{opacity:0.35}
+.cin-svg{display:flex;align-items:center;justify-content:center;background:#1a1410}
+/* overlay gradient on active panel */
+.cin-panel::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.55) 0%,transparent 60%);opacity:0;transition:opacity .6s}
+.cin-panel.active::after{opacity:1}
+/* text content */
+.cin-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 8%;z-index:10;pointer-events:none}
+.cin-eyebrow{font-size:10px;letter-spacing:4px;color:rgba(255,255,255,0.6);margin-bottom:14px;font-family:var(--font-sans);font-weight:500;transform:translateY(20px);opacity:0;transition:all .7s ease .2s}
+.cin-title{font-family:var(--font-serif);font-size:clamp(40px,6vw,80px);font-weight:700;color:#fff;line-height:1.05;margin-bottom:20px;transform:translateY(30px);opacity:0;transition:all .7s ease .35s}
+.cin-title em{font-style:italic;color:var(--amber2)}
+.cin-desc{font-size:15px;color:rgba(255,255,255,0.7);line-height:1.8;max-width:420px;margin-bottom:32px;transform:translateY(20px);opacity:0;transition:all .7s ease .5s;font-family:var(--font-sans)}
+.cin-btns{display:flex;gap:14px;align-items:center;transform:translateY(20px);opacity:0;transition:all .7s ease .65s;pointer-events:all}
+.cin-btn-main{padding:14px 32px;background:var(--amber);color:#fff;font-family:var(--font-sans);font-size:13px;font-weight:500;border-radius:var(--radius);text-decoration:none;border:none;cursor:pointer;transition:background .2s,transform .15s}
+.cin-btn-main:hover{background:var(--amber2);transform:translateY(-2px)}
+.cin-btn-ghost{padding:13px 24px;background:rgba(255,255,255,0.1);color:#fff;font-family:var(--font-sans);font-size:13px;border-radius:var(--radius);text-decoration:none;border:1px solid rgba(255,255,255,0.3);transition:all .2s;backdrop-filter:blur(4px)}
+.cin-btn-ghost:hover{background:rgba(255,255,255,0.2)}
+.cin-hero.loaded .cin-eyebrow,.cin-hero.loaded .cin-title,.cin-hero.loaded .cin-desc,.cin-hero.loaded .cin-btns{opacity:1;transform:translateY(0)}
+/* scroll indicator */
+.cin-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:10;opacity:0;transition:opacity .5s .9s;pointer-events:none}
+.cin-hero.loaded .cin-scroll{opacity:1}
+.cin-scroll span{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,0.5);font-family:var(--font-sans)}
+.cin-scroll-line{width:1px;height:40px;background:rgba(255,255,255,0.3);position:relative;overflow:hidden}
+.cin-scroll-line::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--amber);animation:scrollDown 1.8s ease-in-out infinite}
+@keyframes scrollDown{0%{top:-100%}100%{top:100%}}
+/* panel dots nav */
+.cin-dots{position:absolute;right:32px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:10}
+.cin-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.3);cursor:pointer;transition:all .3s}
+.cin-dot.on{background:var(--amber);transform:scale(1.4)}
+/* stats bar */
+.cin-stats{position:absolute;bottom:0;left:0;right:0;background:rgba(14,14,12,0.85);backdrop-filter:blur(8px);border-top:1px solid rgba(255,255,255,0.08);display:flex;padding:0 8%;z-index:10}
+.cin-stat{flex:1;padding:18px 0;text-align:center;border-right:1px solid rgba(255,255,255,0.08)}
+.cin-stat:last-child{border-right:none}
+.cin-stat .cn{font-family:var(--font-serif);font-size:24px;font-weight:700;color:#fff}
+.cin-stat .cl{font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.45);margin-top:3px;font-family:var(--font-sans)}
+/* parallax on scroll */
+.cin-bg{transform-origin:top center}
+
+/* ── PRODUCT DETAIL MODAL ── */
+.pdm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:700;align-items:center;justify-content:center;padding:20px}
+.pdm-overlay.on{display:flex}
+.pdm-box{background:var(--white);border-radius:16px;max-width:900px;width:100%;max-height:90vh;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;position:relative}
+.pdm-close{position:absolute;top:16px;right:16px;background:var(--off2);border:none;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);z-index:2;transition:all .2s}
+.pdm-close:hover{background:var(--text);color:#fff}
+.pdm-gallery{background:var(--off2);overflow:hidden;position:relative}
+.pdm-main-img{width:100%;height:100%;min-height:400px;display:flex;align-items:center;justify-content:center;padding:32px}
+.pdm-thumbs{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.pdm-thumb{width:48px;height:48px;border-radius:6px;background:var(--off);border:2px solid transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .2s;overflow:hidden}
+.pdm-thumb.on{border-color:var(--amber)}
+.pdm-info{padding:36px 32px;overflow-y:auto}
+.pdm-badge{display:inline-block;background:var(--amber);color:#fff;font-size:9px;font-weight:600;padding:3px 10px;border-radius:2px;letter-spacing:1px;margin-bottom:12px}
+.pdm-name{font-family:var(--font-serif);font-size:26px;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.2}
+.pdm-stars{color:var(--amber2);font-size:13px;margin-bottom:16px}
+.pdm-stars span{font-size:11px;color:var(--text3);margin-left:4px}
+.pdm-price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:20px}
+.pdm-price-now{font-family:var(--font-serif);font-size:28px;font-weight:700;color:var(--text)}
+.pdm-price-was{font-size:14px;color:var(--text3);text-decoration:line-through}
+.pdm-desc{font-size:13px;color:var(--text2);line-height:1.85;margin-bottom:20px}
+.pdm-label{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:1.5px;margin-bottom:8px;text-transform:uppercase}
+.pdm-sizes{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.pdm-sz{padding:8px 16px;border:1.5px solid var(--border2);border-radius:3px;font-size:12px;font-family:var(--font-sans);color:var(--text2);cursor:pointer;transition:all .2s;background:none}
+.pdm-sz:hover,.pdm-sz.on{border-color:var(--amber);color:var(--amber);background:var(--amber-light)}
+.pdm-features{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}
+.pdm-feat{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2)}
+.pdm-feat::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.pdm-actions{display:flex;flex-direction:column;gap:10px}
+.pdm-atc{padding:13px;background:var(--text);color:#fff;border:none;font-family:var(--font-sans);font-size:13px;font-weight:500;border-radius:var(--radius);cursor:pointer;transition:background .2s}
+.pdm-atc:hover{background:var(--amber)}
+.pdm-wa{padding:12px;background:#25D366;color:#fff;border:none;font-family:var(--font-sans);font-size:12px;font-weight:500;border-radius:var(--radius);cursor:pointer;transition:background .2s}
+.pdm-wa:hover{background:#1da550}
+@media(max-width:700px){
+  .pdm-box{grid-template-columns:1fr;max-height:95vh}
+  .pdm-gallery{min-height:260px}
+  .pdm-main-img{min-height:260px}
+  .pdm-info{padding:24px 20px}
+}
+</style>
+
+<!-- CINEMATIC HERO -->
+<section class="cin-hero" id="cin-hero">
+  <!-- bg panels — when you have real photos replace .cin-svg divs with <img src="your-photo.jpg"> -->
+  <div class="cin-bg" id="cinBg">
+    <div class="cin-panel active" data-idx="0" onclick="setPanel(0)">
+      <div class="cin-svg">
+        <svg width="220" height="320" viewBox="0 0 220 320" style="filter:drop-shadow(0 20px 60px rgba(184,114,15,0.4))">
+          <circle cx="110" cy="68" r="48" fill="#c8892a"/>
+          <rect x="74" y="110" width="72" height="100" rx="18" fill="#a06820"/>
+          <rect x="28" y="120" width="50" height="18" rx="8" fill="#a06820" transform="rotate(-10 28 120)"/>
+          <rect x="142" y="120" width="50" height="18" rx="8" fill="#a06820" transform="rotate(10 142 120)"/>
+          <rect x="70" y="206" width="34" height="80" rx="16" fill="#a06820" transform="rotate(-4 70 206)"/>
+          <rect x="116" y="206" width="34" height="80" rx="16" fill="#a06820" transform="rotate(4 116 206)"/>
+          <circle cx="110" cy="38" r="12" fill="#e8a832"/>
+          <rect x="72" y="298" width="76" height="14" rx="7" fill="#e8a832"/>
+        </svg>
+      </div>
+    </div>
+    <div class="cin-panel" data-idx="1" onclick="setPanel(1)">
+      <div class="cin-svg" style="background:#120e08">
+        <svg width="260" height="220" viewBox="0 0 260 220" style="filter:drop-shadow(0 20px 60px rgba(184,114,15,0.3))">
+          <circle cx="80" cy="52" r="36" fill="#c8892a"/>
+          <rect x="54" y="82" width="52" height="80" rx="14" fill="#a06820"/>
+          <rect x="20" y="92" width="38" height="14" rx="6" fill="#a06820" transform="rotate(-10 20 92)"/>
+          <rect x="106" y="88" width="38" height="14" rx="6" fill="#a06820" transform="rotate(10 106 88)"/>
+          <rect x="56" y="158" width="22" height="52" rx="10" fill="#a06820"/>
+          <rect x="80" y="158" width="22" height="52" rx="10" fill="#a06820"/>
+          <circle cx="180" cy="52" r="36" fill="#e8a832"/>
+          <rect x="154" y="82" width="52" height="80" rx="14" fill="#c8892a"/>
+          <rect x="154" y="88" width="38" height="14" rx="6" fill="#c8892a" transform="rotate(-10 154 88)"/>
+          <rect x="200" y="92" width="38" height="14" rx="6" fill="#c8892a" transform="rotate(10 200 92)"/>
+          <rect x="156" y="158" width="22" height="52" rx="10" fill="#c8892a"/>
+          <rect x="180" y="158" width="22" height="52" rx="10" fill="#c8892a"/>
+          <rect x="50" y="214" width="160" height="6" rx="3" fill="#e8a832"/>
+          <text x="130" y="40" text-anchor="middle" font-size="20" fill="#fff">♥</text>
+        </svg>
+      </div>
+    </div>
+    <div class="cin-panel" data-idx="2" onclick="setPanel(2)">
+      <div class="cin-svg" style="background:#080c10">
+        <svg width="200" height="280" viewBox="0 0 200 280" style="filter:drop-shadow(0 20px 60px rgba(184,114,15,0.35))">
+          <polygon points="100,10 118,40 100,34 82,40" fill="#e8a832"/>
+          <circle cx="100" cy="60" r="36" fill="#c8892a"/>
+          <rect x="68" y="90" width="64" height="90" rx="14" fill="#5a3410"/>
+          <rect x="24" y="100" width="46" height="16" rx="7" fill="#5a3410" transform="rotate(-12 24 100)"/>
+          <rect x="130" y="100" width="46" height="16" rx="7" fill="#5a3410" transform="rotate(12 130 100)"/>
+          <rect x="68" y="176" width="28" height="76" rx="14" fill="#5a3410" transform="rotate(-3 68 176)"/>
+          <rect x="104" y="176" width="28" height="76" rx="14" fill="#5a3410" transform="rotate(3 104 176)"/>
+          <rect x="62" y="258" width="76" height="14" rx="7" fill="#e8a832"/>
+        </svg>
+      </div>
+    </div>
+    <div class="cin-panel" data-idx="3" onclick="setPanel(3)">
+      <div class="cin-svg" style="background:#0a100a">
+        <svg width="200" height="200" viewBox="0 0 200 200" style="filter:drop-shadow(0 20px 60px rgba(184,114,15,0.3))">
+          <ellipse cx="100" cy="126" rx="62" ry="44" fill="#c8892a"/>
+          <circle cx="100" cy="76" r="44" fill="#c8892a"/>
+          <ellipse cx="60" cy="50" rx="18" ry="26" fill="#c8892a"/>
+          <ellipse cx="140" cy="50" rx="18" ry="26" fill="#c8892a"/>
+          <ellipse cx="60" cy="48" rx="11" ry="16" fill="#e8c090"/>
+          <ellipse cx="140" cy="48" rx="11" ry="16" fill="#e8c090"/>
+          <circle cx="82" cy="78" r="7" fill="#2a1800"/>
+          <circle cx="118" cy="78" r="7" fill="#2a1800"/>
+          <ellipse cx="100" cy="96" rx="16" ry="10" fill="#e8a832"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- text overlay -->
+  <div class="cin-content">
+    <div class="cin-eyebrow" id="cinEye">HANDCRAFTED IN INDIA · ONE OF ONE</div>
+    <h1 class="cin-title" id="cinTitle">Your World.<br><em>Made Real.</em></h1>
+    <p class="cin-desc" id="cinDesc">Custom 3D miniatures of the people, pets and characters that matter most — printed, painted, made only for you.</p>
+    <div class="cin-btns">
+      <a href="#shop" class="cin-btn-main">Shop Now</a>
+      <a href="#how" class="cin-btn-ghost">How It Works</a>
+    </div>
+  </div>
+
+  <!-- panel dots -->
+  <div class="cin-dots">
+    <div class="cin-dot on" onclick="setPanel(0)"></div>
+    <div class="cin-dot" onclick="setPanel(1)"></div>
+    <div class="cin-dot" onclick="setPanel(2)"></div>
+    <div class="cin-dot" onclick="setPanel(3)"></div>
+  </div>
+
+  <!-- scroll hint -->
+  <div class="cin-scroll">
+    <div class="cin-scroll-line"></div>
+    <span>SCROLL</span>
+  </div>
+
+  <!-- stats bar -->
+  <div class="cin-stats">
+    <div class="cin-stat"><div class="cn">500+</div><div class="cl">HAPPY CUSTOMERS</div></div>
+    <div class="cin-stat"><div class="cn">4.9★</div><div class="cl">AVERAGE RATING</div></div>
+    <div class="cin-stat"><div class="cn">48HR</div><div class="cl">TURNAROUND</div></div>
+    <div class="cin-stat"><div class="cn">100%</div><div class="cl">CUSTOM MADE</div></div>
+  </div>
+</section>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="pdm-overlay" id="pdmOverlay" onclick="if(event.target===this)closePDM()">
+  <div class="pdm-box" id="pdmBox">
+    <button class="pdm-close" onclick="closePDM()">✕</button>
+    <!-- gallery side -->
+    <div class="pdm-gallery">
+      <div class="pdm-main-img" id="pdmMain"></div>
+      <div class="pdm-thumbs" id="pdmThumbs"></div>
+    </div>
+    <!-- info side -->
+    <div class="pdm-info">
+      <div class="pdm-badge" id="pdmBadge">BESTSELLER</div>
+      <h2 class="pdm-name" id="pdmName">Product Name</h2>
+      <div class="pdm-stars">★★★★★ <span id="pdmReviews">(48 reviews)</span></div>
+      <div class="pdm-price-row">
+        <span class="pdm-price-now" id="pdmPrice">₹3,199</span>
+        <span class="pdm-price-was" id="pdmWas"></span>
+      </div>
+      <p class="pdm-desc" id="pdmDesc">Description here</p>
+      <div class="pdm-label">SELECT SIZE</div>
+      <div class="pdm-sizes" id="pdmSizes"></div>
+      <div class="pdm-label" style="margin-bottom:12px">WHAT'S INCLUDED</div>
+      <div class="pdm-features" id="pdmFeats"></div>
+      <div class="pdm-actions">
+        <button class="pdm-atc" id="pdmAtcBtn" onclick="pdmAddCart()">Add to Cart</button>
+        <button class="pdm-wa" onclick="pdmWhatsApp()">💬 Order via WhatsApp</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="m-track">
+    <span>3D MINIATURES</span><span class="dot">✦</span><span>CUSTOM MADE</span><span class="dot">✦</span><span>SHIPS ACROSS INDIA</span><span class="dot">✦</span><span>HAND PAINTED</span><span class="dot">✦</span><span>RESIN PRINTED</span><span class="dot">✦</span><span>PEOPLE · PETS · CHARACTERS</span><span class="dot">✦</span><span>COUPLES · GIFTS · DnD</span><span class="dot">✦</span><span>FIGORAQ · MORADABAD</span><span class="dot">✦</span>
+    <span>3D MINIATURES</span><span class="dot">✦</span><span>CUSTOM MADE</span><span class="dot">✦</span><span>SHIPS ACROSS INDIA</span><span class="dot">✦</span><span>HAND PAINTED</span><span class="dot">✦</span><span>RESIN PRINTED</span><span class="dot">✦</span><span>PEOPLE · PETS · CHARACTERS</span><span class="dot">✦</span><span>COUPLES · GIFTS · DnD</span><span class="dot">✦</span><span>FIGORAQ · MORADABAD</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="categories fi" id="categories">
+  <div class="sec-head"><h2>Shop by <em>Category</em></h2><a href="#shop">View All →</a></div>
+  <div class="cat-grid">
+    <a class="ccat" href="#shop" onclick="doFilter('person',null)"><div class="ccat-img"><svg width="56" height="76" viewBox="0 0 56 76"><circle cx="28" cy="18" r="14" fill="#c8892a"/><rect x="16" y="30" width="24" height="30" rx="7" fill="#a06820"/><rect x="16" y="58" width="10" height="16" rx="5" fill="#a06820"/><rect x="30" y="58" width="10" height="16" rx="5" fill="#a06820"/></svg></div><div class="ccat-label">3D Miniature</div><div class="ccat-count">6 Products</div></a>
+    <a class="ccat" href="#shop" onclick="doFilter('couple',null)"><div class="ccat-img"><svg width="68" height="64" viewBox="0 0 68 64"><circle cx="20" cy="16" r="11" fill="#c8892a"/><rect x="12" y="26" width="16" height="28" rx="5" fill="#a06820"/><circle cx="48" cy="16" r="11" fill="#e8a832"/><rect x="40" y="26" width="16" height="28" rx="5" fill="#c8892a"/><text x="34" y="16" text-anchor="middle" font-size="10" fill="#fff">♥</text></svg></div><div class="ccat-label">Couple</div><div class="ccat-count">3 Products</div></a>
+    <a class="ccat" href="#shop" onclick="doFilter('pet',null)"><div class="ccat-img"><svg width="68" height="64" viewBox="0 0 68 64"><ellipse cx="34" cy="42" rx="20" ry="14" fill="#c8892a"/><circle cx="34" cy="26" r="14" fill="#c8892a"/><ellipse cx="18" cy="16" rx="6" ry="9" fill="#c8892a"/><ellipse cx="50" cy="16" rx="6" ry="9" fill="#c8892a"/><circle cx="27" cy="27" r="2.5" fill="#2a1800"/><circle cx="41" cy="27" r="2.5" fill="#2a1800"/></svg></div><div class="ccat-label">Pet</div><div class="ccat-count">4 Products</div></a>
+    <a class="ccat" href="#shop" onclick="doFilter('character',null)"><div class="ccat-img"><svg width="56" height="76" viewBox="0 0 56 76"><polygon points="28,4 34,14 28,11 22,14" fill="#e8a832"/><circle cx="28" cy="22" r="12" fill="#c8892a"/><rect x="16" y="32" width="24" height="26" rx="5" fill="#6b4010"/><rect x="8" y="36" width="12" height="5" rx="2" fill="#6b4010"/><rect x="36" y="36" width="12" height="5" rx="2" fill="#6b4010"/></svg></div><div class="ccat-label">DnD / Character</div><div class="ccat-count">3 Products</div></a>
+    <a class="ccat" href="#shop" onclick="doFilter('bobble',null)"><div class="ccat-img"><svg width="56" height="76" viewBox="0 0 56 76"><circle cx="28" cy="18" r="16" fill="#c8892a"/><line x1="28" y1="32" x2="28" y2="38" stroke="#bbb" stroke-width="3" stroke-linecap="round"/><rect x="16" y="36" width="24" height="24" rx="4" fill="#a06820"/><rect x="12" y="58" width="32" height="8" rx="3" fill="#e8a832"/></svg></div><div class="ccat-label">Bobble Head</div><div class="ccat-count">2 Products</div></a>
+    <a class="ccat" href="#shop" onclick="doFilter('gift',null)"><div class="ccat-img"><svg width="64" height="64" viewBox="0 0 64 64"><rect x="10" y="28" width="44" height="30" rx="4" fill="#a06820"/><rect x="8" y="20" width="48" height="12" rx="3" fill="#c8892a"/><rect x="29" y="20" width="6" height="38" fill="#e8a832"/><path d="M32,20 Q20,8 14,12 Q8,16 16,20 Q24,22 32,20Z" fill="#e8a832"/><path d="M32,20 Q44,8 50,12 Q56,16 48,20 Q40,22 32,20Z" fill="#e8a832"/></svg></div><div class="ccat-label">Gift Sets</div><div class="ccat-count">4 Products</div></a>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products fi" id="shop">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="sec-head"><h2>Our <em>Products</em></h2></div>
+    <div class="pills">
+      <button class="pill on" onclick="doFilter('all',this)">All Products</button>
+      <button class="pill" onclick="doFilter('person',this)">3D Miniature</button>
+      <button class="pill" onclick="doFilter('couple',this)">Couple</button>
+      <button class="pill" onclick="doFilter('pet',this)">Pet</button>
+      <button class="pill" onclick="doFilter('character',this)">DnD / Character</button>
+      <button class="pill" onclick="doFilter('bobble',this)">Bobble Head</button>
+      <button class="pill" onclick="doFilter('gift',this)">Gift Sets</button>
+    </div>
+    <div class="pgrid" id="pg">
+
+      <div class="pcard" data-cat="person"
+        data-name="Full Body Custom Miniature" data-badge="BESTSELLER" data-reviews="(48 reviews)"
+        data-price="3199" data-was="4999" data-cat2="person"
+        data-desc="Your face, outfit, and pose — sculpted in high-resolution resin. Every detail hand-painted to match your photo exactly. Includes a premium display base, delivered in our signature black gift box."
+        data-sizes="4 inch|6 inch|9 inch" data-prices="3199|5499|9999"
+        data-feats="High-res resin print|Hand painted|Display base included|Premium gift box|Photo approval preview|Ships in 10–15 days">
+        <div class="pimg"><div class="ribbon">BESTSELLER</div><svg width="96" height="136" viewBox="0 0 96 136"><circle cx="48" cy="26" r="21" fill="#c8892a"/><rect x="30" y="44" width="36" height="50" rx="10" fill="#a06820"/><rect x="8" y="50" width="24" height="9" rx="4" fill="#a06820" transform="rotate(-10 8 50)"/><rect x="64" y="50" width="24" height="9" rx="4" fill="#a06820" transform="rotate(10 64 50)"/><rect x="29" y="91" width="16" height="38" rx="8" fill="#a06820" transform="rotate(-3 29 91)"/><rect x="51" y="91" width="16" height="38" rx="8" fill="#a06820" transform="rotate(3 51 91)"/><circle cx="48" cy="13" r="5" fill="#e8a832"/><rect x="28" y="130" width="40" height="6" rx="3" fill="#e8a832"/></svg></div>
+        <div class="pbody">
+          <div class="pcat">3D Miniature</div><div class="pname">Full Body Custom Miniature</div>
+          <div class="pdesc">Your face, outfit, and pose — sculpted in high-res resin and hand-painted to match.</div>
+          <div class="pmeta"><div class="pprice"><span class="was">₹4,999</span><span class="range">₹3,199 – ₹9,999</span></div><div><div class="pstars">★★★★★</div><span class="prev">(48)</span></div></div>
+          <div class="szrow"><button class="sz on" onclick="pickSz(this,3199)">4 inch</button><button class="sz" onclick="pickSz(this,5499)">6 inch</button><button class="sz" onclick="pickSz(this,9999)">9 inch</button></div>
+          <button class="atc" onclick="addCart(this,'Full Body Miniature','person',3199)">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="pcard" data-cat="couple"
+        data-name="Couple 3D Miniature Set" data-badge="POPULAR" data-reviews="(31 reviews)"
+        data-price="5999" data-was="" data-cat2="couple"
+        data-desc="Two figures on one shared base — your faces, your outfits, your pose. Perfect for weddings, anniversaries, and every moment worth keeping forever."
+        data-sizes="Small|Medium|Large" data-prices="5999|9999|18999"
+        data-feats="Two custom figures|Shared display base|Both faces custom|Hand painted|Gift box included|Ships in 10–15 days">
+        <div class="pimg"><div class="ribbon hot-r">POPULAR</div><svg width="116" height="128" viewBox="0 0 116 128"><circle cx="36" cy="22" r="17" fill="#c8892a"/><rect x="22" y="37" width="28" height="44" rx="8" fill="#a06820"/><rect x="6" y="43" width="18" height="7" rx="3" fill="#a06820" transform="rotate(-10 6 43)"/><rect x="50" y="39" width="16" height="7" rx="3" fill="#a06820" transform="rotate(10 50 39)"/><rect x="24" y="78" width="12" height="30" rx="6" fill="#a06820"/><rect x="38" y="78" width="12" height="30" rx="6" fill="#a06820"/><circle cx="80" cy="22" r="17" fill="#e8a832"/><rect x="66" y="37" width="28" height="44" rx="8" fill="#c8892a"/><rect x="50" y="39" width="18" height="7" rx="3" fill="#c8892a" transform="rotate(-10 50 39)"/><rect x="92" y="43" width="18" height="7" rx="3" fill="#c8892a" transform="rotate(10 92 43)"/><rect x="68" y="78" width="12" height="30" rx="6" fill="#c8892a"/><rect x="82" y="78" width="12" height="30" rx="6" fill="#c8892a"/><rect x="18" y="110" width="80" height="6" rx="3" fill="#e8a832"/><text x="58" y="14" text-anchor="middle" font-size="12" fill="#fff">♥</text></svg></div>
+        <div class="pbody"><div class="pcat">Couple</div><div class="pname">Couple 3D Miniature Set</div><div class="pdesc">Two figures on one shared base — perfect wedding or anniversary gift.</div><div class="pmeta"><div class="pprice"><span class="range">₹5,999 – ₹18,999</span></div><div><div class="pstars">★★★★★</div><span class="prev">(31)</span></div></div><div class="szrow"><button class="sz on" onclick="pickSz(this,5999)">Small</button><button class="sz" onclick="pickSz(this,9999)">Medium</button><button class="sz" onclick="pickSz(this,18999)">Large</button></div><button class="atc" onclick="addCart(this,'Couple Miniature Set','couple',5999)">Add to Cart</button></div>
+      </div>
+
+      <div class="pcard" data-cat="pet"
+        data-name="Custom Pet Miniature" data-badge="NEW" data-reviews="(19 reviews)"
+        data-price="2499" data-was="3499" data-cat2="pet"
+        data-desc="Your dog, cat, rabbit — exact fur pattern and markings captured in resin. We match every detail from your photo — colour, markings, expression, even the tail position."
+        data-sizes="4 inch|6 inch|9 inch" data-prices="2499|4499|6999"
+        data-feats="Exact fur markings|Hand painted|Custom pose|Display base|Gift box included|Ships in 10–15 days">
+        <div class="pimg"><div class="ribbon new-r">NEW</div><svg width="108" height="108" viewBox="0 0 108 108"><ellipse cx="54" cy="70" rx="32" ry="22" fill="#c8892a"/><circle cx="54" cy="42" r="24" fill="#c8892a"/><ellipse cx="32" cy="27" rx="10" ry="14" fill="#c8892a"/><ellipse cx="76" cy="27" rx="10" ry="14" fill="#c8892a"/><ellipse cx="32" cy="25" rx="6" ry="9" fill="#e8c090"/><ellipse cx="76" cy="25" rx="6" ry="9" fill="#e8c090"/><circle cx="43" cy="43" r="3.5" fill="#2a1800"/><circle cx="65" cy="43" r="3.5" fill="#2a1800"/><ellipse cx="54" cy="54" rx="8" ry="5" fill="#e8a832"/></svg></div>
+        <div class="pbody"><div class="pcat">Pet</div><div class="pname">Custom Pet Miniature</div><div class="pdesc">Your dog, cat, rabbit — exact fur pattern and markings captured in resin.</div><div class="pmeta"><div class="pprice"><span class="was">₹3,499</span><span class="range">₹2,499 – ₹6,999</span></div><div><div class="pstars">★★★★★</div><span class="prev">(19)</span></div></div><div class="szrow"><button class="sz on" onclick="pickSz(this,2499)">4 inch</button><button class="sz" onclick="pickSz(this,4499)">6 inch</button><button class="sz" onclick="pickSz(this,6999)">9 inch</button></div><button class="atc" onclick="addCart(this,'Custom Pet Miniature','pet',2499)">Add to Cart</button></div>
+      </div>
+
+      <div class="pcard" data-cat="person"
+        data-name="Kurta Pajama Miniature" data-badge="INDIAN SPECIAL" data-reviews="(22 reviews)"
+        data-price="2999" data-was="3999" data-cat2="person"
+        data-desc="Traditional Indian outfit — customise the face, colour, dupatta, pagdi, everything. Perfect for shaadi gifts, family occasions, and cultural celebrations."
+        data-sizes="4 inch|6 inch|9 inch" data-prices="2999|5499|7999"
+        data-feats="Custom face|Outfit colour choice|Traditional styling|Hand painted|Display base|Ships in 10–15 days">
+        <div class="pimg"><svg width="96" height="136" viewBox="0 0 96 136"><circle cx="48" cy="26" r="21" fill="#c8892a"/><rect x="28" y="44" width="40" height="50" rx="9" fill="#7a4a10"/><rect x="6" y="50" width="24" height="9" rx="4" fill="#7a4a10" transform="rotate(-12 6 50)"/><rect x="66" y="50" width="24" height="9" rx="4" fill="#7a4a10" transform="rotate(12 66 50)"/><rect x="29" y="91" width="16" height="38" rx="8" fill="#7a4a10" transform="rotate(-3 29 91)"/><rect x="51" y="91" width="16" height="38" rx="8" fill="#7a4a10" transform="rotate(3 51 91)"/><rect x="34" y="44" width="28" height="7" rx="3" fill="#e8a832"/><rect x="28" y="130" width="40" height="6" rx="3" fill="#e8a832"/></svg></div>
+        <div class="pbody"><div class="pcat">3D Miniature</div><div class="pname">Kurta Pajama Miniature</div><div class="pdesc">Traditional Indian outfit — customise the face, colour, and styling details.</div><div class="pmeta"><div class="pprice"><span class="was">₹3,999</span><span class="range">₹2,999 – ₹7,999</span></div><div><div class="pstars">★★★★★</div><span class="prev">(22)</span></div></div><div class="szrow"><button class="sz on" onclick="pickSz(this,2999)">4 inch</button><button class="sz" onclick="pickSz(this,5499)">6 inch</button><button class="sz" onclick="pickSz(this,7999)">9 inch</button></div><button class="atc" onclick="addCart(this,'Kurta Pajama Miniature','person',2999)">Add to Cart</button></div>
+      </div>
+
+      <div class="pcard" data-cat="character"
+        data-name="DnD / OC Character Mini" data-badge="DnD SPECIAL" data-reviews="(14 reviews)"
+        data-price="2999" data-was="" data-cat2="character"
+        data-desc="Your RPG hero, original character, or game avatar — finally something you can hold in your hand. Send us your character art or describe them and we build it from scratch."
+        data-sizes="28mm|54mm|75mm" data-prices="2999|5499|8999"
+        data-feats="Custom from your art|Weapon + armour detail|Hand painted|Display base|Character card included|Ships in 10–15 days">
+        <div class="pimg"><div class="ribbon">DnD</div><svg width="96" height="136" viewBox="0 0 96 136"><polygon points="48,6 58,20 48,16 38,20" fill="#e8a832"/><circle cx="48" cy="30" r="18" fill="#c8892a"/><rect x="30" y="46" width="36" height="44" rx="7" fill="#5a3410"/><rect x="12" y="52" width="20" height="8" rx="4" fill="#5a3410" transform="rotate(-12 12 52)"/><rect x="64" y="52" width="20" height="8" rx="4" fill="#5a3410" transform="rotate(12 64 52)"/><rect x="30" y="87" width="15" height="38" rx="7" fill="#5a3410" transform="rotate(-3 30 87)"/><rect x="51" y="87" width="15" height="38" rx="7" fill="#5a3410" transform="rotate(3 51 87)"/><rect x="28" y="128" width="40" height="6" rx="3" fill="#e8a832"/></svg></div>
+        <div class="pbody"><div class="pcat">Character</div><div class="pname">DnD / OC Character Mini</div><div class="pdesc">Your RPG hero, original character, or game avatar made physical.</div><div class="pmeta"><div class="pprice"><span class="range">₹2,999 – ₹8,999</span></div><div><div class="pstars">★★★★★</div><span class="prev">(14)</span></div></div><div class="szrow"><button class="sz on" onclick="pickSz(this,2999)">28mm</button><button class="sz" onclick="pickSz(this,5499)">54mm</button><button class="sz" onclick="pickSz(this,8999)">75mm</button></div><button class="atc" onclick="addCart(this,'DnD Character Mini','character',2999)">Add to Cart</button></div>
+      </div>
+
+      <div class="pcard" data-cat="bobble"
+        data-name="Custom Bobble Head" data-badge="FUN PICK" data-reviews="(11 reviews)"
+        data-price="2499" data-was="3499" data-cat2="bobble"
+        data-desc="A fun, wobbly version of you — custom face sculpted from your photo, spring-loaded head, painted in your outfit. Great desk decoration and gift."
+        data-sizes="Small|Medium|Large" data-prices="2499|3999|5999"
+        data-feats="Spring-loaded head|Custom face|Outfit painted|Fun desk decor|Gift box included|Ships in 10–15 days">
+        <div class="pimg"><svg width="96" height="136" viewBox="0 0 96 136"><circle cx="48" cy="28" r="24" fill="#c8892a"/><line x1="48" y1="50" x2="48" y2="60" stroke="#ccc" stroke-width="4" stroke-linecap="round"/><rect x="28" y="58" width="40" height="38" rx="6" fill="#a06820"/><rect x="22" y="94" width="52" height="10" rx="4" fill="#e8a832"/><rect x="18" y="104" width="60" height="8" rx="3" fill="#c8892a"/></svg></div>
+        <div class="pbody"><div class="pcat">Bobble Head</div><div class="pname">Custom Bobble Head</div><div class="pdesc">A fun, wobbly version of you — custom face, spring head, your outfit.</div><div class="pmeta"><div class="pprice"><span class="was">₹3,499</span><span class="range">₹2,499 – ₹5,999</span></div><div><div class="pstars">★★★★☆</div><span class="prev">(11)</span></div></div><div class="szrow"><button class="sz on" onclick="pickSz(this,2499)">Small</button><button class="sz" onclick="pickSz(this,3999)">Medium</button><button class="sz" onclick="pickSz(this,5999)">Large</button></div><button class="atc" onclick="addCart(this,'Custom Bobble Head','bobble',2499)">Add to Cart</button></div>
+      </div>
+
+      <div class="pcard" data-cat="person">
+        <div class="pimg"><div class="ribbon">PREMIUM</div><svg width="96" height="136" viewBox="0 0 96 136"><circle cx="48" cy="24" r="19" fill="#c8892a"/><rect x="30" y="40" width="36" height="48" rx="9" fill="#1e3a80"/><rect x="8" y="46" width="24" height="8" rx="4" fill="#1e3a80" transform="rotate(-10 8 46)"/><rect x="64" y="46" width="24" height="8" rx="4" fill="#1e3a80" transform="rotate(10 64 46)"/><rect x="29" y="85" width="16" height="38" rx="8" fill="#162e66" transform="rotate(-3 29 85)"/><rect x="51" y="85" width="16" height="38" rx="8" fill="#162e66" transform="rotate(3 51 85)"/><circle cx="48" cy="12" r="5" fill="#e8a832"/><rect x="28" y="126" width="40" height="6" rx="3" fill="#e8a832"/></svg></div>
+        <div class="pbody"><div class="pcat">3D Miniature</div><div class="pname">Football Player Mini</div><div class="pdesc">Custom jersey colour, your face, your number — resin printed and painted.</div><div class="pmeta"><div class="pprice"><span class="was">₹4,999</span><span class="now">₹2,999</span></div><div><div class="pstars">★★★★★</div><span class="prev">(36)</span></div></div><div class="szrow"><button class="sz on" onclick="pickSz(this,2999)">4 inch</button><button class="sz" onclick="pickSz(this,5499)">6 inch</button><button class="sz" onclick="pickSz(this,8999)">9 inch</button></div><button class="atc" onclick="addCart(this,'Football Player Mini','person',2999)">Add to Cart</button></div>
+      </div>
+
+      <div class="pcard" data-cat="gift">
+        <div class="pimg"><svg width="96" height="96" viewBox="0 0 96 96"><rect x="14" y="42" width="68" height="46" rx="5" fill="#a06820"/><rect x="12" y="30" width="72" height="16" rx="4" fill="#c8892a"/><rect x="44" y="30" width="8" height="58" fill="#e8a832"/><path d="M48,30 Q32,14 22,18 Q12,22 24,30 Q36,34 48,30Z" fill="#e8a832"/><path d="M48,30 Q64,14 74,18 Q84,22 72,30 Q60,34 48,30Z" fill="#e8a832"/><circle cx="48" cy="30" r="7" fill="#faeeda"/></svg></div>
+        <div class="pbody"><div class="pcat">Gift Set</div><div class="pname">Miniature + Premium Box</div><div class="pdesc">Any miniature, packed in our signature black gift box with amber tissue and wax seal.</div><div class="pmeta"><div class="pprice"><span class="range">₹3,499 – ₹11,999</span></div><div><div class="pstars">★★★★★</div><span class="prev">(28)</span></div></div><div class="szrow"><button class="sz on" onclick="pickSz(this,3499)">4 inch</button><button class="sz" onclick="pickSz(this,6499)">6 inch</button><button class="sz" onclick="pickSz(this,11999)">9 inch</button></div><button class="atc" onclick="addCart(this,'Miniature + Gift Box','gift',3499)">Add to Cart</button></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust fi">
+  <div class="trust-row">
+    <div class="ti"><div class="ti-icon">🚚</div><div><div class="ti-t1">Free Shipping</div><div class="ti-t2">On orders above ₹999</div></div></div>
+    <div class="ti"><div class="ti-icon">🎨</div><div><div class="ti-t1">Hand Painted</div><div class="ti-t2">Every piece finished by hand</div></div></div>
+    <div class="ti"><div class="ti-icon">📦</div><div><div class="ti-t1">Premium Packaging</div><div class="ti-t2">Gift-ready on arrival</div></div></div>
+    <div class="ti"><div class="ti-icon">✅</div><div><div class="ti-t1">Approve Before Print</div><div class="ti-t2">Preview before we print anything</div></div></div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="hiw fi" id="how">
+  <div class="hiw-inner">
+    <h2>How It Works</h2>
+    <p>From photo to doorstep in 10–15 days</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-title">Add to Cart</div><div class="step-desc">Pick your miniature type and size. Place your order easily.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-title">Send Your Photo</div><div class="step-desc">We WhatsApp you to collect your photo and details.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-title">We Build & Approve</div><div class="step-desc">We send you a 3D preview. You approve before we print anything.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-title">Delivered to You</div><div class="step-desc">Printed, painted, gift-packed, shipped across India.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews fi" id="reviews">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="sec-head"><h2>What Customers <em>Say</em></h2></div>
+    <div class="rgrid">
+      <div class="rcard"><p class="rtext">It was really special for both of us — I felt immense happiness giving it and he was so happy to receive it. The detail was unbelievable, exactly like him.</p><div class="rauthor"><div class="ravatar">S</div><div><div class="rname">Shivangi R.</div><div class="rstars">★★★★★</div></div></div></div>
+      <div class="rcard"><p class="rtext">So many people asked me where I got it from! The miniature looks exactly like me — same outfit, same pose, same expression. Absolutely love it.</p><div class="rauthor"><div class="ravatar">H</div><div><div class="rname">Hitesh M.</div><div class="rstars">★★★★★</div></div></div></div>
+      <div class="rcard"><p class="rtext">Special thanks for keeping all the requirements I asked for and giving exactly what I wanted. The packaging was stunning too. Keep up the amazing work!</p><div class="rauthor"><div class="ravatar">A</div><div><div class="rname">Arjun K.</div><div class="rstars">★★★★★</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta fi">
+  <h2>Ready to make yours <em>real?</em></h2>
+  <p>Every piece is made only for you — no mold kept, no duplicate ever made.</p>
+  <a href="#shop" class="btn-primary" style="font-size:14px;padding:14px 36px">Order Your Miniature</a>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="foot-wrap">
+    <div class="ftop">
+      <div><div class="fbrand">FIGORAQ<em>.</em></div><div class="ftagline">Custom 3D miniatures of people, pets, characters, and memories — handcrafted and made only for you. Based in Moradabad, ships across India.</div></div>
+      <div class="fcol"><h4>Shop</h4><a href="#shop">3D Miniature</a><a href="#shop">Couple Miniature</a><a href="#shop">Pet Miniature</a><a href="#shop">DnD Character</a><a href="#shop">Bobble Head</a><a href="#shop">Gift Sets</a></div>
+      <div class="fcol"><h4>Info</h4><a href="#how">How It Works</a><a href="#reviews">Reviews</a><a href="#">Shipping Policy</a><a href="#">Refund Policy</a><a href="#">Terms</a></div>
+      <div class="fcol"><h4>Contact</h4><a href="https://instagram.com/figoraq">Instagram @figoraq</a><a href="https://wa.me/91XXXXXXXXXX">WhatsApp Us</a><a href="/cdn-cgi/l/email-protection#751d1019191a35131c121a0714045b161a18"><span class="__cf_email__" data-cfemail="d9b1bcb5b5b699bfb0beb6abb8a8f7bab6b4">[email&#160;protected]</span></a></div>
+    </div>
+    <div class="fbot"><div class="fcopy">© 2025 FIGORAQ · Moradabad, Uttar Pradesh, India</div><div class="fpol"><a href="#">Privacy Policy</a><a href="#">Shipping</a><a href="#">Refunds</a></div></div>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="overlay" id="ov" onclick="closeCart()"></div>
+<div class="drawer" id="dr">
+  <div class="dhead"><div><span style="font-size:15px;font-weight:600">Your Cart</span><span class="dcnt" id="dcnt">0 items</span></div><button class="dclose" onclick="closeCart()">✕</button></div>
+  <div class="ditems" id="dit"><div class="dempty" id="demp"><div style="font-size:36px">🛒</div><span>Your cart is empty</span><a href="#shop" onclick="closeCart()" style="color:var(--amber);font-size:12px;text-decoration:none">Browse products →</a></div></div>
+  <div class="dfoot" id="dft" style="display:none">
+    <div class="dtotal-row"><span>Subtotal</span><span class="dtot" id="dtot">₹0</span></div>
+    <p class="dnote">After ordering we'll WhatsApp you for your photo. No payment taken until you approve the 3D model preview.</p>
+    <button class="dco" onclick="payWithRazorpay()">Pay Now — Razorpay 💳</button>
+    <button class="dwa" onclick="doWA()">💬 Order via WhatsApp instead</button>
+  </div>
+</div>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="wa-float"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+
+<!-- ══════════════════════════════════════════
+     ORDER MODAL — shown after Razorpay/WA
+═══════════════════════════════════════════ -->
+<div id="order-modal-bg" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:600;align-items:center;justify-content:center">
+  <div style="background:var(--white);border-radius:16px;padding:40px 32px;max-width:440px;width:90%;text-align:center;position:relative">
+    <div style="font-size:48px;margin-bottom:16px">🎉</div>
+    <h3 style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--text);margin-bottom:10px">Order Received!</h3>
+    <p style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:24px">We'll WhatsApp you within a few hours to collect your photo and confirm all details. Payment is only taken after you approve your 3D preview.</p>
+    <div style="background:var(--off);border-radius:8px;padding:16px;margin-bottom:24px;text-align:left">
+      <div style="font-size:11px;font-weight:600;color:var(--amber);letter-spacing:1px;margin-bottom:8px">WHAT HAPPENS NEXT</div>
+      <div style="font-size:12px;color:var(--text2);line-height:2">1. We WhatsApp you for your photo<br>2. We build your 3D model (48hrs)<br>3. You approve the preview<br>4. We print, paint & ship 📦</div>
+    </div>
+    <button onclick="closeModal()" style="width:100%;padding:13px;background:var(--amber);color:#fff;border:none;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer">Got it, thanks!</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CONTACT / ORDER FORM (Formspree)
+     Replace YOUR_FORMSPREE_ID with your ID
+     from formspree.io after signup (free)
+═══════════════════════════════════════════ -->
+<div id="contact-form-section" style="padding:64px 48px;background:var(--off);border-top:1px solid var(--border)">
+  <div style="max-width:600px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:36px">
+      <div style="font-size:11px;font-weight:500;color:var(--amber);letter-spacing:2px;margin-bottom:8px">DIRECT ENQUIRY</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--text)">Have a question? <em style="font-style:italic;color:var(--amber)">Ask us.</em></h2>
+      <p style="font-size:13px;color:var(--text2);margin-top:8px">We reply within a few hours. You'll get a confirmation email immediately.</p>
+    </div>
+    <form id="enquiry-form" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" onsubmit="handleForm(event)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--text2);letter-spacing:1px;display:block;margin-bottom:6px">YOUR NAME</label>
+          <input name="name" required placeholder="Rahul Sharma" style="width:100%;padding:11px 14px;border:1.5px solid var(--border2);border-radius:4px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--white);outline:none;transition:border-color .2s" onfocus="this.style.borderColor='#b8720f'" onblur="this.style.borderColor='#d4cec4'"/>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--text2);letter-spacing:1px;display:block;margin-bottom:6px">YOUR EMAIL</label>
+          <input name="email" type="email" required placeholder="rahul@email.com" style="width:100%;padding:11px 14px;border:1.5px solid var(--border2);border-radius:4px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--white);outline:none;transition:border-color .2s" onfocus="this.style.borderColor='#b8720f'" onblur="this.style.borderColor='#d4cec4'"/>
+        </div>
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:11px;font-weight:500;color:var(--text2);letter-spacing:1px;display:block;margin-bottom:6px">PHONE / WHATSAPP</label>
+        <input name="phone" placeholder="+91 98765 43210" style="width:100%;padding:11px 14px;border:1.5px solid var(--border2);border-radius:4px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--white);outline:none;transition:border-color .2s" onfocus="this.style.borderColor='#b8720f'" onblur="this.style.borderColor='#d4cec4'"/>
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:11px;font-weight:500;color:var(--text2);letter-spacing:1px;display:block;margin-bottom:6px">WHAT DO YOU WANT TO ORDER?</label>
+        <select name="product" style="width:100%;padding:11px 14px;border:1.5px solid var(--border2);border-radius:4px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--white);outline:none;appearance:none">
+          <option value="">Select a product...</option>
+          <option>Full Body 3D Miniature</option>
+          <option>Couple Miniature Set</option>
+          <option>Custom Pet Miniature</option>
+          <option>DnD / Character Miniature</option>
+          <option>Custom Bobble Head</option>
+          <option>Miniature + Gift Box</option>
+          <option>Something else / custom</option>
+        </select>
+      </div>
+      <div style="margin-bottom:20px">
+        <label style="font-size:11px;font-weight:500;color:var(--text2);letter-spacing:1px;display:block;margin-bottom:6px">YOUR MESSAGE</label>
+        <textarea name="message" rows="4" placeholder="Tell us what you have in mind — any special details, size preference, occasion..." style="width:100%;padding:11px 14px;border:1.5px solid var(--border2);border-radius:4px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--white);outline:none;resize:vertical;transition:border-color .2s" onfocus="this.style.borderColor='#b8720f'" onblur="this.style.borderColor='#d4cec4'"></textarea>
+      </div>
+      <input type="hidden" name="_subject" value="New FIGORAQ Order Enquiry!"/>
+      <input type="hidden" name="_next" value=""/>
+      <button type="submit" id="form-btn" style="width:100%;padding:14px;background:var(--amber);color:#fff;border:none;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:background .2s;letter-spacing:0.3px">Send Enquiry</button>
+      <div id="form-success" style="display:none;margin-top:14px;padding:14px;background:var(--green-light);border-radius:6px;font-size:13px;color:var(--green);text-align:center;font-weight:500">✅ Sent! We'll reply within a few hours.</div>
+    </form>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+let cart=[];
+const svgs={person:`<svg width="40" height="56" viewBox="0 0 40 56"><circle cx="20" cy="10" r="9" fill="#c8892a"/><rect x="11" y="18" width="18" height="22" rx="5" fill="#a06820"/><rect x="11" y="38" width="8" height="16" rx="4" fill="#a06820"/><rect x="22" y="38" width="8" height="16" rx="4" fill="#a06820"/></svg>`,couple:`<svg width="48" height="44" viewBox="0 0 48 44"><circle cx="14" cy="11" r="9" fill="#c8892a"/><rect x="7" y="19" width="14" height="22" rx="4" fill="#a06820"/><circle cx="34" cy="11" r="9" fill="#e8a832"/><rect x="27" y="19" width="14" height="22" rx="4" fill="#c8892a"/></svg>`,pet:`<svg width="44" height="44" viewBox="0 0 44 44"><ellipse cx="22" cy="30" rx="16" ry="12" fill="#c8892a"/><circle cx="22" cy="18" r="12" fill="#c8892a"/><ellipse cx="12" cy="10" rx="6" ry="8" fill="#c8892a"/><ellipse cx="32" cy="10" rx="6" ry="8" fill="#c8892a"/></svg>`,character:`<svg width="40" height="56" viewBox="0 0 40 56"><polygon points="20,2 26,11 20,9 14,11" fill="#e8a832"/><circle cx="20" cy="19" r="10" fill="#c8892a"/><rect x="10" y="27" width="20" height="20" rx="4" fill="#5a3410"/></svg>`,bobble:`<svg width="40" height="56" viewBox="0 0 40 56"><circle cx="20" cy="16" r="14" fill="#c8892a"/><line x1="20" y1="28" x2="20" y2="34" stroke="#bbb" stroke-width="3"/><rect x="10" y="32" width="20" height="18" rx="4" fill="#a06820"/></svg>`,gift:`<svg width="44" height="44" viewBox="0 0 44 44"><rect x="6" y="20" width="32" height="22" rx="3" fill="#a06820"/><rect x="4" y="14" width="36" height="8" rx="2" fill="#c8892a"/><rect x="19" y="14" width="6" height="28" fill="#e8a832"/><path d="M22,14 Q14,6 10,10 Q6,14 14,16Z" fill="#e8a832"/><path d="M22,14 Q30,6 34,10 Q38,14 30,16Z" fill="#e8a832"/></svg>`};
+
+function openCart(){document.getElementById('ov').classList.add('on');document.getElementById('dr').classList.add('on')}
+function closeCart(){document.getElementById('ov').classList.remove('on');document.getElementById('dr').classList.remove('on')}
+
+function pickSz(btn,price){
+  btn.closest('.szrow').querySelectorAll('.sz').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  btn.closest('.pbody').querySelector('.atc').dataset.price=price;
+}
+
+function addCart(btn,name,cat,base){
+  const sz=btn.closest('.pbody').querySelector('.sz.on');
+  const size=sz?sz.textContent:'Standard';
+  const price=parseInt(btn.dataset.price||base);
+  const key=name+'|'+size;
+  const ex=cart.find(i=>i.key===key);
+  ex?ex.qty++:cart.push({id:Date.now(),key,name,cat,size,price,qty:1});
+  btn.textContent='Added ✓';btn.classList.add('added');
+  setTimeout(()=>{btn.textContent='Add to Cart';btn.classList.remove('added')},1800);
+  renderCart();
+  const b=document.getElementById('cb');b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');
+  openCart();
+}
+
+function chgQty(id,d){const i=cart.find(x=>x.id===id);if(!i)return;i.qty+=d;if(i.qty<=0)cart=cart.filter(x=>x.id!==id);renderCart()}
+function rmItem(id){cart=cart.filter(x=>x.id!==id);renderCart()}
+
+function renderCart(){
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const count=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cb').textContent=count;
+  document.getElementById('dcnt').textContent=count+' item'+(count!==1?'s':'');
+  document.getElementById('dtot').textContent='₹'+total.toLocaleString('en-IN');
+  const el=document.getElementById('dit'),emp=document.getElementById('demp'),ft=document.getElementById('dft');
+  if(!cart.length){el.innerHTML='';el.appendChild(emp);emp.style.display='flex';ft.style.display='none';return}
+  emp.style.display='none';ft.style.display='block';
+  el.innerHTML=cart.map(i=>`<div class="ditem"><div class="ditem-img">${svgs[i.cat]||svgs.person}</div><div><div class="ditem-name">${i.name}</div><div class="ditem-meta">${i.size}</div><div class="qctrl"><button class="qb" onclick="chgQty(${i.id},-1)">−</button><span class="qn">${i.qty}</span><button class="qb" onclick="chgQty(${i.id},1)">+</button></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><button class="ddel" onclick="rmItem(${i.id})">✕</button><div class="ditem-price">₹${(i.price*i.qty).toLocaleString('en-IN')}</div></div></div>`).join('');
+}
+
+function doWA(){
+  if(!cart.length)return;
+  const lines=cart.map(i=>`• ${i.name} (${i.size}) x${i.qty} = ₹${(i.price*i.qty).toLocaleString('en-IN')}`).join('%0A');
+  const tot=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  sendOrderEmail(lines.replace(/%0A/g,'\n'),tot,'WhatsApp Order');
+  window.open(`https://wa.me/91XXXXXXXXXX?text=Hello FIGORAQ!%0A%0AI'd like to order:%0A${lines}%0A%0ATotal: ₹${tot.toLocaleString('en-IN')}%0A%0APlease guide me on next steps.`,'_blank');
+}
+
+function openModal(){document.getElementById('order-modal-bg').style.display='flex'}
+function closeModal(){document.getElementById('order-modal-bg').style.display='none';cart=[];renderCart();closeCart()}
+
+function payWithRazorpay(){
+  if(!cart.length)return;
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const items=cart.map(i=>`${i.name} (${i.size}) x${i.qty}`).join(', ');
+  if(typeof Razorpay==='undefined'){doWA();return;}
+  const options={
+    key:'rzp_live_XXXXXXXXXXXXXXXX',
+    amount:total*100,
+    currency:'INR',
+    name:'FIGORAQ',
+    description:items,
+    handler:function(response){
+      sendOrderEmail(items,total,response.razorpay_payment_id);
+      openModal();
+    },
+    prefill:{name:'',email:'',contact:''},
+    notes:{order_items:items},
+    theme:{color:'#b8720f'}
+  };
+  const rz=new Razorpay(options);
+  rz.open();
+}
+
+function sendOrderEmail(items,total,paymentId){
+  const FORM_ID='YOUR_FORMSPREE_ID';
+  if(FORM_ID==='YOUR_FORMSPREE_ID')return;
+  fetch('https://formspree.io/f/'+FORM_ID,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({
+      _subject:'🎉 NEW FIGORAQ ORDER — ₹'+total.toLocaleString('en-IN'),
+      payment_id:paymentId||'WhatsApp Order',
+      items:items,
+      total:'₹'+total.toLocaleString('en-IN'),
+      message:'New order placed on figoraq website'
+    })
+  });
+}
+
+function handleForm(e){
+  e.preventDefault();
+  const btn=document.getElementById('form-btn');
+  btn.textContent='Sending...';btn.disabled=true;
+  fetch(e.target.action,{
+    method:'POST',body:new FormData(e.target),
+    headers:{'Accept':'application/json'}
+  }).then(r=>{
+    if(r.ok){document.getElementById('form-success').style.display='block';e.target.reset();}
+    btn.textContent='Send Enquiry';btn.disabled=false;
+  }).catch(()=>{btn.textContent='Send Enquiry';btn.disabled=false;});
+}
+
+function doFilter(cat,btn){
+  if(btn){document.querySelectorAll('.pill').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
+  document.querySelectorAll('.pcard').forEach(c=>c.classList.toggle('hide',cat!=='all'&&c.dataset.cat!==cat));
+  document.getElementById('shop').scrollIntoView({behavior:'smooth'});
+}
+
+document.querySelectorAll('.fi').forEach(el=>new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:0.08}).observe(el));
+
+// ── CARD CLICK → OPEN MODAL ──
+// Any click on pcard that isn't a button opens the product modal
+document.addEventListener('click',function(e){
+  const card=e.target.closest('.pcard');
+  if(!card)return;
+  if(e.target.closest('button'))return; // let buttons work normally
+  const d=card.dataset;
+  if(!d.name)return;
+  openPDM(
+    d.name,
+    d.cat2||d.cat,
+    parseInt(d.price),
+    parseInt(d.was)||0,
+    d.badge||'',
+    d.reviews||'',
+    d.desc||'',
+    d.sizes?d.sizes.split('|'):[],
+    d.prices?d.prices.split('|').map(Number):[],
+    d.feats?d.feats.split('|'):[]
+  );
+});
+
+// ── CINEMATIC HERO ──
+const panelData=[
+  {eye:'CUSTOM PERSON MINIATURES',title:'Your face.<br><em>Immortalised.</em>',desc:'Send us your photo. We sculpt your face, outfit, personality in high-res resin.'},
+  {eye:'COUPLE & WEDDING MINIATURES',title:'Two people.<br><em>One moment.</em>',desc:'Wedding, anniversary, or just because — a miniature set that lasts forever.'},
+  {eye:'DnD & CHARACTER MINIATURES',title:'Your character.<br><em>Made physical.</em>',desc:'Your RPG hero, OC, or game avatar — finally something you can hold in your hand.'},
+  {eye:'CUSTOM PET MINIATURES',title:'Your pet.<br><em>Always with you.</em>',desc:'Exact fur markings, exact personality — your dog, cat, or any pet in resin.'},
+];
+let cinCurrent=0,cinTimer;
+
+function setPanel(idx){
+  cinCurrent=idx;
+  document.querySelectorAll('.cin-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.cin-dot').forEach((d,i)=>d.classList.toggle('on',i===idx));
+  const d=panelData[idx];
+  ['cinEye','cinTitle','cinDesc'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.opacity='0';el.style.transform='translateY(10px)'}});
+  setTimeout(()=>{
+    const eye=document.getElementById('cinEye'),title=document.getElementById('cinTitle'),desc=document.getElementById('cinDesc');
+    if(eye)eye.textContent=d.eye;
+    if(title)title.innerHTML=d.title;
+    if(desc)desc.textContent=d.desc;
+    ['cinEye','cinTitle','cinDesc'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.transition='all .55s ease';el.style.opacity='1';el.style.transform='translateY(0)'}});
+  },180);
+  clearInterval(cinTimer);
+  cinTimer=setInterval(()=>setPanel((cinCurrent+1)%4),5500);
+}
+
+window.addEventListener('load',()=>{
+  const h=document.getElementById('cin-hero');
+  if(h)setTimeout(()=>h.classList.add('loaded'),120);
+  cinTimer=setInterval(()=>setPanel((cinCurrent+1)%4),5500);
+});
+
+window.addEventListener('scroll',()=>{
+  const hero=document.getElementById('cin-hero');
+  if(!hero||window.scrollY>window.innerHeight)return;
+  const rate=window.scrollY*0.18;
+  hero.querySelectorAll('.cin-svg').forEach(el=>el.style.transform=`translateY(${rate}px)`);
+},{passive:true});
+
+// ── PRODUCT DETAIL MODAL ──
+const pdmSVGs={
+  person:`<svg width="160" height="240" viewBox="0 0 160 240"><circle cx="80" cy="46" r="36" fill="#c8892a"/><rect x="52" y="78" width="56" height="80" rx="14" fill="#a06820"/><rect x="16" y="88" width="40" height="14" rx="6" fill="#a06820" transform="rotate(-10 16 88)"/><rect x="104" y="88" width="40" height="14" rx="6" fill="#a06820" transform="rotate(10 104 88)"/><rect x="50" y="154" width="26" height="64" rx="13" fill="#a06820" transform="rotate(-3 50 154)"/><rect x="84" y="154" width="26" height="64" rx="13" fill="#a06820" transform="rotate(3 84 154)"/><circle cx="80" cy="22" r="9" fill="#e8a832"/><rect x="48" y="224" width="64" height="10" rx="5" fill="#e8a832"/></svg>`,
+  couple:`<svg width="200" height="200" viewBox="0 0 200 200"><circle cx="60" cy="44" r="28" fill="#c8892a"/><rect x="38" y="68" width="44" height="72" rx="12" fill="#a06820"/><rect x="10" y="76" width="32" height="12" rx="5" fill="#a06820" transform="rotate(-10 10 76)"/><rect x="82" y="70" width="30" height="12" rx="5" fill="#a06820" transform="rotate(10 82 70)"/><rect x="40" y="136" width="18" height="48" rx="9" fill="#a06820"/><rect x="62" y="136" width="18" height="48" rx="9" fill="#a06820"/><circle cx="140" cy="44" r="28" fill="#e8a832"/><rect x="118" y="68" width="44" height="72" rx="12" fill="#c8892a"/><rect x="90" y="70" width="30" height="12" rx="5" fill="#c8892a" transform="rotate(-10 90 70)"/><rect x="160" y="76" width="32" height="12" rx="5" fill="#c8892a" transform="rotate(10 160 76)"/><rect x="120" y="136" width="18" height="48" rx="9" fill="#c8892a"/><rect x="142" y="136" width="18" height="48" rx="9" fill="#c8892a"/><rect x="30" y="190" width="140" height="8" rx="4" fill="#e8a832"/><text x="100" y="30" text-anchor="middle" font-size="18" fill="#fff">♥</text></svg>`,
+  pet:`<svg width="180" height="180" viewBox="0 0 180 180"><ellipse cx="90" cy="120" rx="56" ry="40" fill="#c8892a"/><circle cx="90" cy="70" r="42" fill="#c8892a"/><ellipse cx="52" cy="44" rx="16" ry="24" fill="#c8892a"/><ellipse cx="128" cy="44" rx="16" ry="24" fill="#c8892a"/><ellipse cx="52" cy="42" rx="10" ry="15" fill="#e8c090"/><ellipse cx="128" cy="42" rx="10" ry="15" fill="#e8c090"/><circle cx="72" cy="72" r="7" fill="#2a1800"/><circle cx="108" cy="72" r="7" fill="#2a1800"/><ellipse cx="90" cy="88" rx="16" ry="10" fill="#e8a832"/></svg>`,
+  character:`<svg width="160" height="240" viewBox="0 0 160 240"><polygon points="80,8 96,32 80,26 64,32" fill="#e8a832"/><circle cx="80" cy="54" r="32" fill="#c8892a"/><rect x="56" y="82" width="48" height="76" rx="12" fill="#5a3410"/><rect x="18" y="92" width="42" height="14" rx="6" fill="#5a3410" transform="rotate(-12 18 92)"/><rect x="100" y="92" width="42" height="14" rx="6" fill="#5a3410" transform="rotate(12 100 92)"/><rect x="54" y="154" width="24" height="68" rx="12" fill="#5a3410" transform="rotate(-3 54 154)"/><rect x="82" y="154" width="24" height="68" rx="12" fill="#5a3410" transform="rotate(3 82 154)"/><rect x="48" y="228" width="64" height="10" rx="5" fill="#e8a832"/></svg>`,
+  bobble:`<svg width="160" height="220" viewBox="0 0 160 220"><circle cx="80" cy="50" r="44" fill="#c8892a"/><line x1="80" y1="90" x2="80" y2="108" stroke="#ccc" stroke-width="6" stroke-linecap="round"/><rect x="46" y="106" width="68" height="60" rx="10" fill="#a06820"/><rect x="36" y="164" width="88" height="18" rx="7" fill="#e8a832"/><rect x="28" y="180" width="104" height="14" rx="6" fill="#c8892a"/></svg>`,
+  gift:`<svg width="160" height="160" viewBox="0 0 160 160"><rect x="24" y="72" width="112" height="76" rx="8" fill="#a06820"/><rect x="20" y="50" width="120" height="28" rx="6" fill="#c8892a"/><rect x="72" y="50" width="16" height="86" fill="#e8a832"/><path d="M80,50 Q50,20 34,28 Q18,36 34,48 Q52,56 80,50Z" fill="#e8a832"/><path d="M80,50 Q110,20 126,28 Q142,36 126,48 Q108,56 80,50Z" fill="#e8a832"/><circle cx="80" cy="50" r="12" fill="#faeeda"/></svg>`
+};
+let pdmCurrentProduct=null;
+
+function openPDM(name,cat,price,wasPrice,badge,reviews,desc,sizes,prices,features){
+  pdmCurrentProduct={name,cat,price,wasPrice,badge,reviews,desc,sizes,prices,features,selectedIdx:0};
+  document.getElementById('pdmBadge').textContent=badge;
+  document.getElementById('pdmName').textContent=name;
+  document.getElementById('pdmReviews').textContent=reviews;
+  document.getElementById('pdmPrice').textContent='₹'+price.toLocaleString('en-IN');
+  document.getElementById('pdmWas').textContent=wasPrice?'₹'+wasPrice.toLocaleString('en-IN'):'';
+  document.getElementById('pdmDesc').textContent=desc;
+  document.getElementById('pdmMain').innerHTML=`<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:360px">${pdmSVGs[cat]||pdmSVGs.person}</div>`;
+  document.getElementById('pdmThumbs').innerHTML=['Front','Side','Detail','Close-up'].map((v,i)=>`<div class="pdm-thumb ${i===0?'on':''}" onclick="this.parentNode.querySelectorAll('.pdm-thumb').forEach(t=>t.classList.remove('on'));this.classList.add('on')" style="font-size:9px;color:var(--text3);letter-spacing:1px;flex-direction:column;gap:2px">${v}</div>`).join('');
+  document.getElementById('pdmSizes').innerHTML=sizes.map((s,i)=>`<button class="pdm-sz ${i===0?'on':''}" onclick="pdmPickSz(this,${i})">${s}<br><span style="font-size:10px;opacity:0.7">₹${prices[i].toLocaleString('en-IN')}</span></button>`).join('');
+  document.getElementById('pdmFeats').innerHTML=features.map(f=>`<div class="pdm-feat">${f}</div>`).join('');
+  document.getElementById('pdmAtcBtn').textContent='Add to Cart';
+  document.getElementById('pdmAtcBtn').style.background='';
+  document.getElementById('pdmOverlay').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function closePDM(){document.getElementById('pdmOverlay').classList.remove('on');document.body.style.overflow='';}
+function pdmPickSz(btn,idx){
+  document.querySelectorAll('.pdm-sz').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  pdmCurrentProduct.selectedIdx=idx;
+  document.getElementById('pdmPrice').textContent='₹'+pdmCurrentProduct.prices[idx].toLocaleString('en-IN');
+}
+function pdmAddCart(){
+  if(!pdmCurrentProduct)return;
+  const {name,cat,prices,sizes,selectedIdx}=pdmCurrentProduct;
+  const price=prices[selectedIdx],size=sizes[selectedIdx],key=name+'|'+size;
+  const ex=cart.find(i=>i.key===key);
+  ex?ex.qty++:cart.push({id:Date.now(),key,name,cat,size,price,qty:1});
+  renderCart();
+  const b=document.getElementById('cb');b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');
+  const btn=document.getElementById('pdmAtcBtn');
+  btn.textContent='Added ✓';btn.style.background='var(--green)';
+  setTimeout(()=>{closePDM();openCart();},1200);
+}
+function pdmWhatsApp(){
+  if(!pdmCurrentProduct)return;
+  const {name,sizes,prices,selectedIdx}=pdmCurrentProduct;
+  window.open(`https://wa.me/91XXXXXXXXXX?text=Hi FIGORAQ!%0A%0AI want to order: ${name} (${sizes[selectedIdx]}) — ₹${prices[selectedIdx].toLocaleString('en-IN')}%0A%0APlease guide me.`,'_blank');
+}
+</script>
+</body>
+</html>
